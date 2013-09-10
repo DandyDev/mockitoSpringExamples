@@ -1,5 +1,6 @@
 package com.remmelt.example.service.impl;
 
+import com.remmelt.example.exception.DatabaseDiskFullException;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,12 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public void savePerson(Person person) {
 		log.info("{}.savePerson({})", "PersonServiceImpl", person);
-		personRepository.savePerson(person);
+        try {
+            personRepository.savePerson(person);
+        } catch (DatabaseDiskFullException e) {
+            log.error("Ooops disk is full");
+        }
+
 	}
 
 	@Override

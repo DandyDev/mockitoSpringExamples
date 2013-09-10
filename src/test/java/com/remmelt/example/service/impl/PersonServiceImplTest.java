@@ -41,9 +41,9 @@ public class PersonServiceImplTest extends AbstractJUnit4SpringContextTests {
 	public void testSavePersonHandlesDatabaseErrorCorrectly() {
 		// do stuff here
 
+        doThrow(new DatabaseDiskFullException("db disk is full, aborting save.")).when(personRepository).savePerson(any(Person.class));
 		personServiceImpl.savePerson(new Person(2, "name", "email"));
-
-		Assert.fail(); // then remove the fail()
+        
 	}
 
 	@Test
