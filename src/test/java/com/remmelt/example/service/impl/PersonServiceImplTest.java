@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
+import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
@@ -21,7 +23,8 @@ import static org.fest.assertions.Assertions.assertThat;
 @Slf4j
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceImplTest extends AbstractJUnit4SpringContextTests {
-	@InjectMocks
+	@Spy
+    @InjectMocks
 	private PersonServiceImpl personServiceImpl;
 
 	@Mock
@@ -50,10 +53,10 @@ public class PersonServiceImplTest extends AbstractJUnit4SpringContextTests {
 		// Try and mock the personServiceImpl.getPersonBy(int) method itself:
 
 		// code goes here
+        doReturn(person).when(personServiceImpl).getPersonBy(anyInt());
+        List<Person> persons = personServiceImpl.getPersonsBy(1, 2, 3);
 
-		List<Person> persons = personServiceImpl.getPersonsBy(id);
-
-		assertThat(persons).hasSize(1);
+		assertThat(persons).hasSize(3);
 		assertThat(persons.get(0)).isEqualTo(person);
 	}
 }
